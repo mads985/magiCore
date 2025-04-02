@@ -12,7 +12,7 @@ public final class MagiCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Create plugin data folder if it doesn't exist
+        // Create plugin data folder if it doesn't exist, apple
         if (!getDataFolder().exists()) {
             getDataFolder().mkdirs();
         }
