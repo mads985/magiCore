@@ -1,0 +1,28 @@
+name: magiCore
+version: '1.0-BETA'
+main: org.madelineb.magiCore.MagiCore
+api-version: '1.19'
+authors:
+  - madeline
+description: Core utils for magi.
+commands:
+  togglesit:
+    description: Toggle the ability to sit on stairs
+    usage: /togglesit [global]
+    permission: magicore.sit
+  placeholderone:
+    description: Placeholder command one
+    usage: /placeholderone
+  placeholdertwo:
+    description: Placeholder command two
+    usage: /placeholdertwo
+  placeholderthree:
+    description: Placeholder command three
+    usage: /placeholderthree
+permissions:
+  magicore.sit:
+    description: Allows players to toggle sitting functionality
+    default: true
+  magicore.sit.admin:
+    description: Allows admins to toggle global sitting functionality
+    default: op
