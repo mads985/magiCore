@@ -1,5 +1,5 @@
 package org.madelineb.magiCore;
-
+    // 100% credit to https://github.com/Minemobs/Chairs
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.Bukkit;
