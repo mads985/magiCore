@@ -8,7 +8,8 @@ public final class MagiCore extends JavaPlugin {
     private CombatTagManager combatTagManager;
     private ChairManager chairManager;
     private DeathCoordinatesListener deathCoordinatesListener;
-    private TextCommands textCommands; // Added TextCommands instance
+    private TextCommands textCommands; // Existing TextCommands instance
+    private EconomyManager economyManager; // Renamed field for consistency
 
     @Override
     public void onEnable() {
@@ -22,13 +23,17 @@ public final class MagiCore extends JavaPlugin {
         combatTagManager = new CombatTagManager(this);
         chairManager = new ChairManager(this);
         deathCoordinatesListener = new DeathCoordinatesListener(this);
-        textCommands = new TextCommands(); // Initialize text commands
+        textCommands = new TextCommands();
+        economyManager = new EconomyManager(this);  // Properly instantiate with this plugin
 
         // Register command handlers
         this.getCommand("togglesit").setExecutor(chairManager);
         this.getCommand("placeholderone").setExecutor(textCommands);
         this.getCommand("placeholdertwo").setExecutor(textCommands);
         this.getCommand("placeholderthree").setExecutor(textCommands);
+        this.getCommand("bag").setExecutor(economyManager);
+        this.getCommand("givegold").setExecutor(economyManager);
+        this.getCommand("givesouls").setExecutor(economyManager);
 
         getLogger().info("magiCore has started.");
     }
@@ -62,5 +67,9 @@ public final class MagiCore extends JavaPlugin {
 
     public ChairManager getChairManager() {
         return chairManager;
+    }
+
+    public EconomyManager getEconomyManager() {
+        return economyManager;
     }
 }

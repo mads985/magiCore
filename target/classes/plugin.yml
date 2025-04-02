@@ -19,10 +19,23 @@ commands:
   placeholderthree:
     description: Placeholder command three
     usage: /placeholderthree
+  bag:
+    description: Displays your total gold coins.
+    usage: /bag
+  givegold:
+    description: Gives a player a number of gold coins.
+    usage: /givegold
+  givesouls:
+    description: Give souls to a player.
+    usage: /givesouls
+
 permissions:
   magicore.sit:
     description: Allows players to toggle sitting functionality
     default: true
   magicore.sit.admin:
     description: Allows admins to toggle global sitting functionality
+    default: op
+  economy.give:
+    description: Allows the player to use /givegold & /givesouls.
     default: op

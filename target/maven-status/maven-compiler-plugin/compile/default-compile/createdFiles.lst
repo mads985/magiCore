@@ -1,6 +1,7 @@
 org\madelineb\magiCore\CombatTagManager.class
 org\madelineb\magiCore\DeathCoordinatesListener.class
 org\madelineb\magiCore\TextCommands.class
+org\madelineb\magiCore\EconomyManager.class
 org\madelineb\magiCore\HealthManager.class
 org\madelineb\magiCore\ChairManager.class
 org\madelineb\magiCore\ChairManager$Chair.class
