@@ -144,6 +144,57 @@ public class Waystones implements CommandExecutor, Listener {
     }
 
     /**
+     * Removes a waystone by name.
+     * Returns true if successful, false otherwise.
+     */
+    private boolean removeWaystone(CommandSender sender, String name) {
+        if (!waystoneConfig.contains("waystones." + name)) {
+            sender.sendMessage(ChatColor.RED + "No waystone with that name exists!");
+            return false;
+        }
+
+        // Get the waystone location
+        String worldName = waystoneConfig.getString("waystones." + name + ".world");
+        World world = Bukkit.getWorld(worldName);
+
+        if (world != null) {
+            // Get coordinates
+            int x = waystoneConfig.getInt("waystones." + name + ".x");
+            int y = waystoneConfig.getInt("waystones." + name + ".y"); // This is the lodestone level
+            int z = waystoneConfig.getInt("waystones." + name + ".z");
+
+            // Remove the physical blocks (only if the world is loaded)
+            Block beaconBlock = world.getBlockAt(x, y + 1, z); // Beacon is one above lodestone
+            Block lodestoneBlock = world.getBlockAt(x, y, z);  // Lodestone is at the stored y value
+            Block bedrockBlock = world.getBlockAt(x, y - 1, z); // Bedrock is one below lodestone
+
+            // Only remove blocks if they match the expected waystone structure
+            if (beaconBlock.getType() == Material.BEACON) {
+                beaconBlock.setType(Material.AIR);
+            }
+
+            if (lodestoneBlock.getType() == Material.LODESTONE) {
+                lodestoneBlock.setType(Material.AIR);
+            }
+
+            // Don't remove bedrock in case it's part of natural terrain
+            // Only remove if in creative mode and explicitly enabled
+            if (sender instanceof Player && ((Player)sender).getGameMode() == GameMode.CREATIVE) {
+                if (bedrockBlock.getType() == Material.BEDROCK) {
+                    bedrockBlock.setType(Material.AIR);
+                }
+            }
+        }
+
+        // Remove from config
+        waystoneConfig.set("waystones." + name, null);
+        saveWaystones();
+
+        sender.sendMessage(ChatColor.GREEN + "Waystone '" + name + "' has been removed.");
+        return true;
+    }
+
+    /**
      * Shows available waystones to a player.
      */
     private void showWaystones(Player player) {
@@ -286,6 +337,7 @@ public class Waystones implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Ensure the sender is a player
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
             return true;
@@ -295,15 +347,30 @@ public class Waystones implements CommandExecutor, Listener {
 
         if (command.getName().equalsIgnoreCase("waystone")) {
             if (args.length < 1) {
-                player.sendMessage(ChatColor.RED + "Usage: /waystone <name>");
+                player.sendMessage(ChatColor.RED + "Usage: /waystone <name> or /waystone remove <name>");
                 return true;
             }
 
+            // Handle removal of a waystone
+            if (args[0].equalsIgnoreCase("remove")) {
+                if (args.length < 2) {
+                    player.sendMessage(ChatColor.RED + "Usage: /waystone remove <name>");
+                    return true;
+                }
+                if (!player.hasPermission("waystone.remove")) {
+                    player.sendMessage(ChatColor.RED + "You don't have permission to remove waystones.");
+                    return true;
+                }
+                String waystoneName = args[1];
+                removeWaystone(player, waystoneName);
+                return true;
+            }
+
+            // Handle creation of a waystone
             if (!player.hasPermission("waystone.create")) {
                 player.sendMessage(ChatColor.RED + "You don't have permission to create waystones.");
                 return true;
             }
-
             String waystoneName = args[0];
             createWaystone(player, waystoneName);
             return true;
@@ -314,7 +381,6 @@ public class Waystones implements CommandExecutor, Listener {
                 showWaystones(player);
                 return true;
             }
-
             String waystoneName = args[0];
             teleportToWaystone(player, waystoneName);
             return true;
@@ -354,20 +420,4 @@ public class Waystones implements CommandExecutor, Listener {
             }
         }
     }
-
-    /**
-     * Register commands in plugin.yml
-     * Add this to your main plugin class:
-     *
-     * @Override
-     * public void onEnable() {
-     *     // Initialize the EconomyManager and Waystones
-     *     EconomyManager economyManager = new EconomyManager(this);
-     *     Waystones waystones = new Waystones(this, economyManager);
-     *
-     *     // Register commands
-     *     this.getCommand("waystone").setExecutor(waystones);
-     *     this.getCommand("waystonetp").setExecutor(waystones);
-     * }
-     */
 }

@@ -47,4 +47,13 @@ permissions:
     description: Allows admins to toggle global sitting functionality
     default: op
   economy.give:
-    description: Allows the player to use /givegold & /givesouls
+    description: Allows the player to use /givegold &
+  waystone.create:
+    description: Allows players to create waystones
+    default: op
+  waystone.remove:
+    description: Allows players to remove waystones
+    default: op
+  waystone.use:
+    description: Allows players to use waystones
+    default: true
