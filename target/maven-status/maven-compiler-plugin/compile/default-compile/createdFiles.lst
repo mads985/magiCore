@@ -1,10 +1,12 @@
 org\madelineb\magiCore\CombatTagManager.class
-org\madelineb\magiCore\DeathCoordinatesListener.class
 org\madelineb\magiCore\TextCommands.class
-org\madelineb\magiCore\EconomyManager.class
 org\madelineb\magiCore\HealthManager.class
-org\madelineb\magiCore\Waystones.class
-org\madelineb\magiCore\ChairManager.class
 org\madelineb\magiCore\ChairManager$Chair.class
 org\madelineb\magiCore\MagiCore.class
+org\madelineb\magiCore\Shrine.class
+org\madelineb\magiCore\DeathCoordinatesListener.class
+org\madelineb\magiCore\EconomyManager.class
+org\madelineb\magiCore\Waystones.class
+org\madelineb\magiCore\ChairManager.class
+org\madelineb\magiCore\Shrine$ShrineSession.class
 org\madelineb\magiCore\DeathCoordinatesListener$1.class

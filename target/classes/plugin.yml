@@ -36,8 +36,11 @@ commands:
     permission: waystone.create
   waystonetp:
     description: Show available waystones or teleport to one
-    usage: /waystonetp [name]
+    usage: /waystonetp <name>
     permission: waystone.use
+  shrine:
+    description: Create, remove, activate, or list shrines.
+    usage: /<command> <create|remove|activate|list> [name]
 
 permissions:
   magicore.sit:
@@ -56,4 +59,13 @@ permissions:
     default: op
   waystone.use:
     description: Allows players to use waystones
+    default: true
+  shrine.create:
+    description: Allows creating shrines
+    default: op
+  shrine.remove:
+    description: Allows removing shrines
+    default: op
+  shrine.activate:
+    description: Allows activating shrines
     default: true

@@ -11,6 +11,7 @@ public final class MagiCore extends JavaPlugin {
     private TextCommands textCommands;
     private EconomyManager economyManager;
     private Waystones waystones;
+    private Shrine shrine;
 
     @Override
     public void onEnable() {
@@ -27,6 +28,7 @@ public final class MagiCore extends JavaPlugin {
         textCommands = new TextCommands();
         economyManager = new EconomyManager(this);
         waystones = new Waystones(this, economyManager);
+        shrine = new Shrine(this, economyManager);
 
         // Register command handlers
         this.getCommand("togglesit").setExecutor(chairManager);
@@ -38,6 +40,7 @@ public final class MagiCore extends JavaPlugin {
         this.getCommand("givesouls").setExecutor(economyManager);
         this.getCommand("waystone").setExecutor(waystones);
         this.getCommand("waystonetp").setExecutor(waystones);
+        this.getCommand("shrine").setExecutor(shrine);
 
         getLogger().info("magiCore has started.");
     }
