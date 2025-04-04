@@ -12,6 +12,7 @@ public final class MagiCore extends JavaPlugin {
     private Waystones waystones;
     private Shrine shrine;
     private TabList tabList;
+    private EssentialsY essentialsY; // Add EssentialsY reference
 
     @Override
     public void onEnable() {
@@ -27,6 +28,9 @@ public final class MagiCore extends JavaPlugin {
         economyManager = new EconomyManager(this);
         waystones = new Waystones(this, economyManager);
         shrine = new Shrine(this, economyManager);
+
+        // Initialize EssentialsY features
+        essentialsY = new EssentialsY(this); // Add this line
 
         // Initialize TabList
         tabList = new TabList(this);
@@ -53,6 +57,8 @@ public final class MagiCore extends JavaPlugin {
         getCommand("waystone").setExecutor(waystones);
         getCommand("waystonetp").setExecutor(waystones);
         getCommand("shrine").setExecutor(shrine);
+
+
     }
 
     @Override
@@ -72,5 +78,6 @@ public final class MagiCore extends JavaPlugin {
     public ChairManager getChairManager() { return chairManager; }
     public EconomyManager getEconomyManager() { return economyManager; }
     public Waystones getWaystones() { return waystones; }
-    public TabList getTabList() { return tabList; } // Updated getter name
+    public TabList getTabList() { return tabList; }
+    public EssentialsY getEssentialsY() { return essentialsY; } // New getter
 }

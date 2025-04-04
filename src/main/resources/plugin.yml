@@ -41,6 +41,16 @@ commands:
   shrine:
     description: Create, remove, activate, or list shrines.
     usage: /<command> <create|remove|activate|list> [name]
+  msg:
+    description: Private message a player
+  r:
+    description: Reply to last message
+  flyspeed:
+    description: Set your fly speed
+  god:
+    description: Toggle godmode
+  starterremove:
+    description: Reset a player's starter kit status
 
 permissions:
   magicore.sit:
@@ -69,3 +79,9 @@ permissions:
   shrine.activate:
     description: Allows activating shrines
     default: true
+  essentials.flyspeed:
+    default: op
+  essentials.god:
+    default: op
+  essentials.starter.admin:
+    default: op
