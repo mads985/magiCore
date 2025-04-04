@@ -1,86 +1,76 @@
 package org.madelineb.magiCore;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class MagiCore extends JavaPlugin {
 
     private HealthManager healthManager;
     private CombatTagManager combatTagManager;
     private ChairManager chairManager;
-    private DeathCoordinatesListener deathCoordinatesListener;
-    private TextCommands textCommands;
     private EconomyManager economyManager;
     private Waystones waystones;
     private Shrine shrine;
+    private TabList tabList;
 
     @Override
     public void onEnable() {
-        // Create plugin data folder if it doesn't exist
+        // Create data folder if needed
         if (!getDataFolder().exists()) {
             getDataFolder().mkdirs();
         }
 
-        // Initialize managers
+        // Initialize core components
         healthManager = new HealthManager(this);
         combatTagManager = new CombatTagManager(this);
         chairManager = new ChairManager(this);
-        deathCoordinatesListener = new DeathCoordinatesListener(this);
-        textCommands = new TextCommands();
         economyManager = new EconomyManager(this);
         waystones = new Waystones(this, economyManager);
         shrine = new Shrine(this, economyManager);
 
-        // Register command handlers
-        this.getCommand("togglesit").setExecutor(chairManager);
-        this.getCommand("placeholderone").setExecutor(textCommands);
-        this.getCommand("placeholdertwo").setExecutor(textCommands);
-        this.getCommand("placeholderthree").setExecutor(textCommands);
-        this.getCommand("bag").setExecutor(economyManager);
-        this.getCommand("givegold").setExecutor(economyManager);
-        this.getCommand("givesouls").setExecutor(economyManager);
-        this.getCommand("waystone").setExecutor(waystones);
-        this.getCommand("waystonetp").setExecutor(waystones);
-        this.getCommand("shrine").setExecutor(shrine);
+        // Initialize TabList
+        tabList = new TabList(this);
+
+        // Register commands
+        registerCommands();
+
+        // Start tab list updates
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                tabList.updateAllPlayers();
+            }
+        }.runTaskTimer(this, 0L, 20L);
 
         getLogger().info("magiCore has started.");
     }
 
+    private void registerCommands() {
+        getCommand("togglesit").setExecutor(chairManager);
+        getCommand("bag").setExecutor(economyManager);
+        getCommand("givegold").setExecutor(economyManager);
+        getCommand("givesouls").setExecutor(economyManager);
+        getCommand("waystone").setExecutor(waystones);
+        getCommand("waystonetp").setExecutor(waystones);
+        getCommand("shrine").setExecutor(shrine);
+    }
+
     @Override
     public void onDisable() {
-        // Save data and cleanup
-        if (healthManager != null) {
-            healthManager.saveAllPlayerHealth();
-        }
-
-        if (combatTagManager != null) {
-            combatTagManager.saveAllCombatLoggers();
-        }
-
-        if (chairManager != null) {
-            chairManager.saveSitPreferences();
-            chairManager.killAllChairs();
-        }
+        // Save data
+        healthManager.saveAllPlayerHealth();
+        combatTagManager.saveAllCombatLoggers();
+        chairManager.saveSitPreferences();
+        chairManager.killAllChairs();
 
         getLogger().info("magiCore has stopped.");
     }
 
-    public HealthManager getHealthManager() {
-        return healthManager;
-    }
-
-    public CombatTagManager getCombatTagManager() {
-        return combatTagManager;
-    }
-
-    public ChairManager getChairManager() {
-        return chairManager;
-    }
-
-    public EconomyManager getEconomyManager() {
-        return economyManager;
-    }
-
-    public Waystones getWaystones() {
-        return waystones;
-    }
+    // Getters
+    public HealthManager getHealthManager() { return healthManager; }
+    public CombatTagManager getCombatTagManager() { return combatTagManager; }
+    public ChairManager getChairManager() { return chairManager; }
+    public EconomyManager getEconomyManager() { return economyManager; }
+    public Waystones getWaystones() { return waystones; }
+    public TabList getTabList() { return tabList; } // Updated getter name
 }

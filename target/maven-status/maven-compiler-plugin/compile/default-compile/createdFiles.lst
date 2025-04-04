@@ -10,3 +10,5 @@ org\madelineb\magiCore\Waystones.class
 org\madelineb\magiCore\ChairManager.class
 org\madelineb\magiCore\Shrine$ShrineSession.class
 org\madelineb\magiCore\DeathCoordinatesListener$1.class
+org\madelineb\magiCore\TabList.class
+org\madelineb\magiCore\MagiCore$1.class

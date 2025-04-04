@@ -69,3 +69,7 @@ permissions:
   shrine.activate:
     description: Allows activating shrines
     default: true
+  simpletabs.admin:
+    description: Gives red name in tab
+  simpletabs.vip:
+    description: Gives gold name in tab

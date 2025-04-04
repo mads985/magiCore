@@ -258,18 +258,22 @@ public class Shrine implements CommandExecutor, Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         UUID mobId = event.getEntity().getUniqueId();
+        LivingEntity entity = event.getEntity();
+        Player killer = entity.getKiller(); // Get the player who landed the final hit
 
         for (Map.Entry<String, ShrineSession> entry : activeSessions.entrySet()) {
             ShrineSession session = entry.getValue();
             if (session.hasMob(mobId)) {
-                session.removeMob(mobId);
-
-                if (session.isCleared()) {
-                    Player player = session.getActivator();
-                    int reward = ThreadLocalRandom.current().nextInt(4, 13);
-                    economyManager.addSouls(player, reward);
-                    player.sendMessage(ChatColor.GOLD + "Shrine cleared! You earned " + reward + " souls.");
-                    activeSessions.remove(entry.getKey());
+                // Only count kills by the shrine activator (player)
+                if (killer != null && killer.equals(session.getActivator())) {
+                    session.removeMob(mobId);
+                    if (session.isCleared()) {
+                        Player player = session.getActivator();
+                        int reward = ThreadLocalRandom.current().nextInt(4, 13);
+                        economyManager.addSouls(player, reward);
+                        player.sendMessage(ChatColor.GOLD + "Shrine cleared! You earned " + reward + " souls.");
+                        activeSessions.remove(entry.getKey());
+                    }
                 }
                 break;
             }
